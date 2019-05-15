@@ -41,7 +41,10 @@ def remove_chars(text: str, chars_to_remove):
     """
     # TODO: Implement according to the docstring.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    text_clean = text
+    for c in chars_to_remove:
+        text_clean = text_clean.replace(c, '')
+    n_removed = len(text) - len(text_clean)
     # ========================
     return text_clean, n_removed
 
@@ -61,7 +64,11 @@ def chars_to_onehot(text: str, char_to_idx: dict) -> Tensor:
     """
     # TODO: Implement the embedding.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    N = len(text)
+    D = len(char_to_idx)
+    result = torch.zeros((N, D), dtype=torch.int8)
+    index_list = [char_to_idx[x] for x in text]
+    result[range(N), index_list] = 1
     # ========================
     return result
 
@@ -78,7 +85,9 @@ def onehot_to_chars(embedded_text: Tensor, idx_to_char: dict) -> str:
     """
     # TODO: Implement the reverse-embedding.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    char_indexes = torch.argmax(embedded_text, dim=1)
+    # print(char_indexes)
+    result = ''.join(idx_to_char[int(i)] for i in char_indexes)
     # ========================
     return result
 
