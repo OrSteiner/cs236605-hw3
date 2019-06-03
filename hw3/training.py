@@ -85,7 +85,33 @@ class Trainer(abc.ABC):
             # - Implement early stopping. This is a very useful and
             #   simple regularization technique that is highly recommended.
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            train_result = self.train_epoch(dl_train, **kw)
+            test_result = self.test_epoch(dl_test, **kw)
+            n, loss_train = 0, 0
+            for loss in train_result[0]:
+                loss_train += loss
+                n += 1
+            loss_train /= n
+            n, loss_test = 0, 0
+            for loss in test_result[0]:
+                loss_test += loss
+                n += 1
+            loss_test /= n
+            train_loss.append(float(loss_train))
+            train_acc.append(train_result[1])
+            test_loss.append(float(loss_test))
+            test_acc.append(test_result[1])
+
+            if epoch > 0 and test_acc[-1] > test_acc[-2]:
+                epochs_without_improvement = 0
+            elif epoch > 0:
+                epochs_without_improvement += 1
+            if epochs_without_improvement == 3 and early_stopping:  # early_stopping:
+                break
+
+            if checkpoints:
+                if epoch < 1 or test_acc[-1] > test_acc[-2]:
+                    torch.save(self.model, "model_save")
             # ========================
 
             # Save model checkpoint if requested
@@ -207,14 +233,17 @@ class RNNTrainer(Trainer):
     def train_epoch(self, dl_train: DataLoader, **kw):
         # TODO: Implement modifications to the base method, if needed.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        B = dl_train.batch_size
+        L = self.model.n_layers
+        H = self.model.h_dim
+        self.h = torch.zeros((B, L, H), requires_grad=True)
         # ========================
         return super().train_epoch(dl_train, **kw)
 
     def test_epoch(self, dl_test: DataLoader, **kw):
         # TODO: Implement modifications to the base method, if needed.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        self.h = None
         # ========================
         return super().test_epoch(dl_test, **kw)
 
@@ -231,7 +260,28 @@ class RNNTrainer(Trainer):
         # - Update params
         # - Calculate number of correct char predictions
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+
+        # printing the x, and the labels to verify
+        # print(x.argmax(dim=2))
+        # print(y)
+        # print(self.h)
+        self.h.detach_()
+        self.optimizer.zero_grad()
+
+        y_pred, temp_h = self.model(x, self.h)
+        y_pred = y_pred.transpose(1, 2)
+        # print("y pred: ", y_pred)
+        loss = self.loss_fn(y_pred, y)
+        loss.backward()
+        self.optimizer.step()
+
+        # calculate
+        y_max = y_pred.argmax(1)
+        # print("y_max: ", y_max)
+        # print("y: ", y)
+        num_correct = torch.sum((y_max == y)).float()
+
+        self.h = temp_h
         # ========================
 
         # Note: scaling num_correct by seq_len because each sample has seq_len
@@ -250,7 +300,13 @@ class RNNTrainer(Trainer):
             # - Loss calculation
             # - Calculate number of correct predictions
             # ====== YOUR CODE: ======
-            raise NotImplementedError()
+            pred, self.h = self.model(x, self.h)
+            pred = pred.transpose(1, 2)
+            loss = self.loss_fn(pred, y)
+
+            pred_disc = pred.argmax(1)  # + 1
+            # print(pred_disc, batch[1])
+            num_correct = torch.sum((pred_disc == y)).float()
             # ========================
 
         return BatchResult(loss.item(), num_correct.item() / seq_len)

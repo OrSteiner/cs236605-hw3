@@ -5,6 +5,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import Tensor
 
+glob_k = 0
 
 def char_maps(text: str):
     """
@@ -120,13 +121,13 @@ def chars_to_labelled_samples(text: str, char_to_idx: dict, seq_len: int,
     N = (len_t - 1) // seq_len
     len_cut = (N * seq_len)
 
-
     chars_vector = chars_to_onehot(text[:len_cut], char_to_idx)
 
     labels = chars_vector[1:]
     samples = chars_vector[:-1]
     T = seq_len - (labels.size()[0] % seq_len)
     V = labels.size()[1]
+    # appendix = torch.zeros((T, V), dtype=torch.int8)
     appendix = torch.zeros((T, V), dtype=torch.int8)
     labels = torch.cat((labels, appendix))
     samples = torch.cat((samples, appendix))
@@ -150,7 +151,8 @@ def hot_softmax(y, dim=0, temperature=1.0):
     """
     # TODO: Implement based on the above.
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    result = y / temperature
+    result = F.softmax(result, dim=dim)
     # ========================
     return result
 
@@ -186,7 +188,57 @@ def generate_from_model(model, start_sequence, n_chars, char_maps, T):
     # necessary for this. Best to disable tracking for speed.
     # See torch.no_grad().
     # ====== YOUR CODE: ======
-    raise NotImplementedError()
+    with torch.no_grad():
+        '''
+        h = None
+        y = torch.zeros((1, 1, len(char_to_idx)))
+
+        for c in start_sequence:
+            x = chars_to_onehot(c, char_to_idx)
+            x.unsqueeze(0)
+            y, h = model(x.to(dtype=float, device=device), h)
+
+        for i in range(len(start_sequence), n_chars):
+            # add new char to the text
+            y = hot_softmax((y[:, -1, :]).flatten(), temperature=T)
+            char_idx = y.multinomial(num_samples=1)
+            char = idx_to_char[int(char_idx)]
+            out_text += char
+
+            # predict the new char
+            x = chars_to_onehot(char, char_to_idx)
+            x = x.unsqueeze(0)
+            y, h = model(x.to(dtype=torch.float, device=device, ), h)
+
+'''
+        seq_len = len(out_text)
+        # add an extra char so it will not drop the last char
+        # chars_to_onehot()
+        x = chars_to_onehot(start_sequence, char_to_idx)
+        x = x.unsqueeze(0)
+        # x, _ = chars_to_labelled_samples(out_text + " ", char_to_idx, seq_len, device)
+        # print("out_text: ", out_text, "x: ", x.argmax())
+
+        n_generate = n_chars - len(start_sequence)
+        h = None
+        # glob_k = 0
+        for i in range(n_generate):
+            y_pred, h = model(x.float(), h)
+
+            # y_max = y_pred.argmax(dim=2)
+            # print(y_max)
+            y_pred = hot_softmax((y_pred[:, -1, :]).flatten(), temperature=T)
+
+            char_idx = y_pred.multinomial(num_samples=1)
+
+            char = idx_to_char[int(char_idx)]
+            # glob_k += 1
+            # print("char added: ", glob_k, " is: ", char)
+            out_text += char
+
+            x = chars_to_onehot(char, char_to_idx)
+            x = x.unsqueeze(0)
+
     # ========================
 
     return out_text
@@ -230,7 +282,33 @@ class MultilayerGRU(nn.Module):
         #     then call self.register_parameter() on them. Also make
         #     sure to initialize them. See functions in torch.nn.init.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        # for first layer
+
+        # for inter layers
+        for i in range(0, n_layers):
+            inner_dim = h_dim
+            if i == 0:
+                inner_dim = in_dim
+            w_xz = nn.Linear(inner_dim, h_dim)
+            w_hz = nn.Linear(h_dim, h_dim, bias=False)
+            w_xr = nn.Linear(inner_dim, h_dim)
+            w_hr = nn.Linear(h_dim, h_dim,  bias=False)
+            w_xg = nn.Linear(inner_dim, h_dim)
+            w_hg = nn.Linear(h_dim, h_dim, bias=False)
+            drop = nn.Dropout(dropout)
+            l_param = (w_xz, w_hz, w_xr, w_hr, w_xg, w_hg, drop)
+            self.layer_params.append(l_param)
+            self.add_module("layer{}_xz".format(i), w_xz)
+            self.add_module("layer{}_hz".format(i), w_hz)
+            self.add_module("layer{}_xr".format(i), w_xr)
+            self.add_module("layer{}_hr".format(i), w_hr)
+            self.add_module("layer{}_xg".format(i), w_xg)
+            self.add_module("layer{}_hg".format(i), w_hg)
+
+        # for last layer
+        self.w_y = nn.Linear(h_dim, out_dim)
+        self.add_module("out", self.w_y)
+
         # ========================
 
     def forward(self, input: Tensor, hidden_state: Tensor=None):
@@ -249,6 +327,7 @@ class MultilayerGRU(nn.Module):
         (B, L, H) as above.
         """
         batch_size, seq_len, _ = input.shape
+        # print("input size: ", input.size())
 
         layer_states = []
         for i in range(self.n_layers):
@@ -256,6 +335,7 @@ class MultilayerGRU(nn.Module):
                 layer_states.append(torch.zeros(batch_size, self.h_dim, device=input.device))
             else:
                 layer_states.append(hidden_state[:, i, :])
+        # print("shape h in ", layer_states[0].size())
 
         layer_input = input
         layer_output = None
@@ -265,6 +345,28 @@ class MultilayerGRU(nn.Module):
         # Tip: You can use torch.stack() to combine multiple tensors into a
         # single tensor in a differentiable manner.
         # ====== YOUR CODE: ======
-        raise NotImplementedError()
+        out_list = []
+        for t in range(seq_len):  # loop over the time
+
+            X_t = input[:, t, :]
+            # print("shape X_t in ", X_t.size())
+
+            for i in range(self.n_layers):
+                params = self.layer_params[i]
+                h_i = layer_states[i]
+                z = F.sigmoid(params[0](X_t) + params[1](h_i))
+                r = F.sigmoid(params[2](X_t) + params[3](h_i))
+                g = F.tanh(params[4](X_t) + params[5](r * h_i))
+
+                next_h = z * h_i + (1 - z) * g
+                layer_states[i] = next_h
+                X_t = next_h
+
+            out = self.w_y(X_t)
+            out_list.append(out)
+
+        layer_output = torch.stack(out_list, dim=1)
+        hidden_state = torch.stack(layer_states, dim=1)
+
         # ========================
         return layer_output, hidden_state
