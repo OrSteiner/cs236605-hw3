@@ -236,14 +236,17 @@ class RNNTrainer(Trainer):
         B = dl_train.batch_size
         L = self.model.n_layers
         H = self.model.h_dim
-        self.h = torch.zeros((B, L, H), requires_grad=True)
+        self.h = torch.zeros((B, L, H), requires_grad=True, device=self.device)
         # ========================
         return super().train_epoch(dl_train, **kw)
 
     def test_epoch(self, dl_test: DataLoader, **kw):
         # TODO: Implement modifications to the base method, if needed.
         # ====== YOUR CODE: ======
-        self.h = None
+        B = dl_test.batch_size
+        L = self.model.n_layers
+        H = self.model.h_dim
+        self.h = torch.zeros((B, L, H), device=self.device)
         # ========================
         return super().test_epoch(dl_test, **kw)
 
@@ -261,6 +264,7 @@ class RNNTrainer(Trainer):
         # - Calculate number of correct char predictions
         # ====== YOUR CODE: ======
 
+        # self.h = self.h.to(self.device)
         # printing the x, and the labels to verify
         # print(x.argmax(dim=2))
         # print(y)
