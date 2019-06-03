@@ -300,13 +300,15 @@ class RNNTrainer(Trainer):
             # - Loss calculation
             # - Calculate number of correct predictions
             # ====== YOUR CODE: ======
-            pred, self.h = self.model(x, self.h)
-            pred = pred.transpose(1, 2)
-            loss = self.loss_fn(pred, y)
+            y_pred, self.h = self.model(x, self.h)
+            y_pred = y_pred.transpose(1, 2)
 
-            pred_disc = pred.argmax(1)  # + 1
-            # print(pred_disc, batch[1])
-            num_correct = torch.sum((pred_disc == y)).float()
+            loss = self.loss_fn(y_pred, y)
+
+            # calculate
+            y_max = y_pred.argmax(1)
+            num_correct = torch.sum((y_max == y)).float()
+
             # ========================
 
         return BatchResult(loss.item(), num_correct.item() / seq_len)
