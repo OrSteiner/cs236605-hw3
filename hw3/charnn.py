@@ -345,6 +345,7 @@ class MultilayerGRU(nn.Module):
         # Tip: You can use torch.stack() to combine multiple tensors into a
         # single tensor in a differentiable manner.
         # ====== YOUR CODE: ======
+        self.to(device=input.device)
         out_list = []
         for t in range(seq_len):  # loop over the time
 
