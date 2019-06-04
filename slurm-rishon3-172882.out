@@ -1,0 +1,100 @@
+cpu-bind=MASK - rishon3, task  0  0 [18998]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [18998]: mask 0x100000001 set
+*** SLURM BATCH JOB 'RNN_exp' STARTING ***
+[NbConvertApp] Converting notebook Part1_Sequence.ipynb to notebook
+[NbConvertApp] Executing notebook with kernel: python3
+[NbConvertApp] ERROR | Error while converting 'Part1_Sequence.ipynb'
+Traceback (most recent call last):
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/nbconvertapp.py", line 408, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 179, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 197, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/notebook.py", line 32, in from_notebook_node
+    nb_copy, resources = super(NotebookExporter, self).from_notebook_node(nb, resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 139, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 316, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/base.py", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/execute.py", line 381, in preprocess
+    nb, resources = super(ExecutePreprocessor, self).preprocess(nb, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/base.py", line 69, in preprocess
+    nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/execute.py", line 424, in preprocess_cell
+    raise CellExecutionError.from_cell_and_msg(cell, out)
+nbconvert.preprocessors.execute.CellExecutionError: An error occurred while executing the following cell:
+------------------
+import torch.nn as nn
+import torch.optim as optim
+from hw3.training import RNNTrainer
+
+torch.manual_seed(42)
+
+lr = 0.01
+num_epochs = 500
+# num_epochs = 100
+print(char_to_idx)
+in_dim = vocab_len
+h_dim = 128
+n_layers = 2
+loss_fn = nn.CrossEntropyLoss()
+model = charnn.MultilayerGRU(in_dim, h_dim, out_dim=in_dim, n_layers=n_layers).to(device)
+optimizer = optim.Adam(model.parameters(), lr=lr)
+trainer = RNNTrainer(model, loss_fn, optimizer, device)
+
+for epoch in range(num_epochs):
+    epoch_result = trainer.train_epoch(dl_corpus_ss, verbose=False)
+    
+    # Every X epochs, we'll generate a sequence starting from the first char in the first sequence
+    # to visualize how/if/what the model is learning.
+    if epoch == 0 or (epoch+1) % 25 == 0:
+        avg_loss = np.mean(epoch_result.losses)
+        accuracy = np.mean(epoch_result.accuracy)
+        print(f'\nEpoch #{epoch+1}: Avg. loss = {avg_loss:.3f}, Accuracy = {accuracy:.2f}%')
+        
+        generated_sequence = charnn.generate_from_model(model, subset_text[0],
+                                                        seq_len*(subset_end-subset_start),
+                                                        (char_to_idx,idx_to_char), T=0.1)
+        # Stop if we've successfully memorized the small dataset.
+        print(generated_sequence)
+        print("length of the generated sequence: ", len(generated_sequence), "len sup: ", len(subset_text))
+        # if generated_sequence == subset_text:
+            # break
+
+# Test successful overfitting
+test.assertGreater(epoch_result.accuracy, 99)
+test.assertEqual(generated_sequence, subset_text)
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mAssertionError[0m                            Traceback (most recent call last)
+[0;32m<ipython-input-14-332a5804dc01>[0m in [0;36m<module>[0;34m[0m
+[1;32m     37[0m [0;34m[0m[0m
+[1;32m     38[0m [0;31m# Test successful overfitting[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 39[0;31m [0mtest[0m[0;34m.[0m[0massertGreater[0m[0;34m([0m[0mepoch_result[0m[0;34m.[0m[0maccuracy[0m[0;34m,[0m [0;36m99[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     40[0m [0mtest[0m[0;34m.[0m[0massertEqual[0m[0;34m([0m[0mgenerated_sequence[0m[0;34m,[0m [0msubset_text[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/unittest/case.py[0m in [0;36massertGreater[0;34m(self, a, b, msg)[0m
+[1;32m   1236[0m         [0;32mif[0m [0;32mnot[0m [0ma[0m [0;34m>[0m [0mb[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1237[0m             [0mstandardMsg[0m [0;34m=[0m [0;34m'%s not greater than %s'[0m [0;34m%[0m [0;34m([0m[0msafe_repr[0m[0;34m([0m[0ma[0m[0;34m)[0m[0;34m,[0m [0msafe_repr[0m[0;34m([0m[0mb[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1238[0;31m             [0mself[0m[0;34m.[0m[0mfail[0m[0;34m([0m[0mself[0m[0;34m.[0m[0m_formatMessage[0m[0;34m([0m[0mmsg[0m[0;34m,[0m [0mstandardMsg[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1239[0m [0;34m[0m[0m
+[1;32m   1240[0m     [0;32mdef[0m [0massertGreaterEqual[0m[0;34m([0m[0mself[0m[0;34m,[0m [0ma[0m[0;34m,[0m [0mb[0m[0;34m,[0m [0mmsg[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/unittest/case.py[0m in [0;36mfail[0;34m(self, msg)[0m
+[1;32m    678[0m     [0;32mdef[0m [0mfail[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mmsg[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    679[0m         [0;34m"""Fail immediately, with the given message."""[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 680[0;31m         [0;32mraise[0m [0mself[0m[0;34m.[0m[0mfailureException[0m[0;34m([0m[0mmsg[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    681[0m [0;34m[0m[0m
+[1;32m    682[0m     [0;32mdef[0m [0massertFalse[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mexpr[0m[0;34m,[0m [0mmsg[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mAssertionError[0m: 98.4375 not greater than 99
+AssertionError: 98.4375 not greater than 99
+
+Got errors while executing notebook Part1_Sequence.ipynb. Make sure you've implemented everything and that all tests pass.
+>> Running 1 notebooks...
+>> Running nbconvert on notebook Part1_Sequence.ipynb [execute|inplace]
+*** SLURM BATCH JOB 'RNN_exp' DONE ***

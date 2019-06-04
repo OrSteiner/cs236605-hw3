@@ -1,0 +1,121 @@
+cpu-bind=MASK - rishon3, task  0  0 [16272]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [16272]: mask 0x100000001 set
+*** SLURM BATCH JOB 'test_job' STARTING ***
+*** Activating environment cs236605-hw ***
+/var/spool/slurmd.rishon3/job172855/slurm_script: line 6: /home/shaigue/miniconda3/etc/profile.d/conda.sh: No such file or directory
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+[NbConvertApp] Converting notebook Part1_Sequence.ipynb to notebook
+[NbConvertApp] Executing notebook with kernel: python3
+[NbConvertApp] ERROR | Error while converting 'Part1_Sequence.ipynb'
+Traceback (most recent call last):
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/nbconvertapp.py", line 408, in export_single_notebook
+    output, resources = self.exporter.from_filename(notebook_filename, resources=resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 179, in from_filename
+    return self.from_file(f, resources=resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 197, in from_file
+    return self.from_notebook_node(nbformat.read(file_stream, as_version=4), resources=resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/notebook.py", line 32, in from_notebook_node
+    nb_copy, resources = super(NotebookExporter, self).from_notebook_node(nb, resources, **kw)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 139, in from_notebook_node
+    nb_copy, resources = self._preprocess(nb_copy, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/exporters/exporter.py", line 316, in _preprocess
+    nbc, resc = preprocessor(nbc, resc)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/base.py", line 47, in __call__
+    return self.preprocess(nb, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/execute.py", line 381, in preprocess
+    nb, resources = super(ExecutePreprocessor, self).preprocess(nb, resources)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/base.py", line 69, in preprocess
+    nb.cells[index], resources = self.preprocess_cell(cell, resources, index)
+  File "/home/shaigue/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/nbconvert/preprocessors/execute.py", line 424, in preprocess_cell
+    raise CellExecutionError.from_cell_and_msg(cell, out)
+nbconvert.preprocessors.execute.CellExecutionError: An error occurred while executing the following cell:
+------------------
+in_dim = vocab_len
+print(vocab_len)
+h_dim = 256
+n_layers = 2
+model = charnn.MultilayerGRU(in_dim, h_dim, out_dim=in_dim, n_layers=n_layers)
+model = model.to(device)
+print(model)
+
+# Test forward pass
+y, h = model(x0.to(dtype=torch.float))
+print(f'y.shape={y.shape}')
+print(f'h.shape={h.shape}')
+
+# print(model.parameters())
+
+test.assertEqual(y.shape, (batch_size, seq_len, vocab_len))
+test.assertEqual(h.shape, (batch_size, n_layers, h_dim))
+test.assertEqual(len(list(model.parameters())), 9 * n_layers + 2) 
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mRuntimeError[0m                              Traceback (most recent call last)
+[0;32m<ipython-input-10-388914209170>[0m in [0;36m<module>[0;34m[0m
+[1;32m      8[0m [0;34m[0m[0m
+[1;32m      9[0m [0;31m# Test forward pass[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 10[0;31m [0my[0m[0;34m,[0m [0mh[0m [0;34m=[0m [0mmodel[0m[0;34m([0m[0mx0[0m[0;34m.[0m[0mto[0m[0;34m([0m[0mdtype[0m[0;34m=[0m[0mtorch[0m[0;34m.[0m[0mfloat[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     11[0m [0mprint[0m[0;34m([0m[0;34mf'y.shape={y.shape}'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     12[0m [0mprint[0m[0;34m([0m[0;34mf'h.shape={h.shape}'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/torch/nn/modules/module.py[0m in [0;36m__call__[0;34m(self, *input, **kwargs)[0m
+[1;32m    487[0m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_slow_forward[0m[0;34m([0m[0;34m*[0m[0minput[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    488[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 489[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mforward[0m[0;34m([0m[0;34m*[0m[0minput[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    490[0m         [0;32mfor[0m [0mhook[0m [0;32min[0m [0mself[0m[0;34m.[0m[0m_forward_hooks[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    491[0m             [0mhook_result[0m [0;34m=[0m [0mhook[0m[0;34m([0m[0mself[0m[0;34m,[0m [0minput[0m[0;34m,[0m [0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/cs236605-hw3/hw3/charnn.py[0m in [0;36mforward[0;34m(self, input, hidden_state)[0m
+[1;32m    355[0m                 [0mparams[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mlayer_params[0m[0;34m[[0m[0mi[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[1;32m    356[0m                 [0mh_i[0m [0;34m=[0m [0mlayer_states[0m[0;34m[[0m[0mi[0m[0;34m][0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 357[0;31m                 [0mz[0m [0;34m=[0m [0mF[0m[0;34m.[0m[0msigmoid[0m[0;34m([0m[0mparams[0m[0;34m[[0m[0;36m0[0m[0;34m][0m[0;34m([0m[0mX_t[0m[0;34m)[0m [0;34m+[0m [0mparams[0m[0;34m[[0m[0;36m1[0m[0;34m][0m[0;34m([0m[0mh_i[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    358[0m                 [0mr[0m [0;34m=[0m [0mF[0m[0;34m.[0m[0msigmoid[0m[0;34m([0m[0mparams[0m[0;34m[[0m[0;36m2[0m[0;34m][0m[0;34m([0m[0mX_t[0m[0;34m)[0m [0;34m+[0m [0mparams[0m[0;34m[[0m[0;36m3[0m[0;34m][0m[0;34m([0m[0mh_i[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    359[0m                 [0mg[0m [0;34m=[0m [0mF[0m[0;34m.[0m[0mtanh[0m[0;34m([0m[0mparams[0m[0;34m[[0m[0;36m4[0m[0;34m][0m[0;34m([0m[0mX_t[0m[0;34m)[0m [0;34m+[0m [0mparams[0m[0;34m[[0m[0;36m5[0m[0;34m][0m[0;34m([0m[0mr[0m [0;34m*[0m [0mh_i[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/torch/nn/modules/module.py[0m in [0;36m__call__[0;34m(self, *input, **kwargs)[0m
+[1;32m    487[0m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0m_slow_forward[0m[0;34m([0m[0;34m*[0m[0minput[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    488[0m         [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 489[0;31m             [0mresult[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mforward[0m[0;34m([0m[0;34m*[0m[0minput[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    490[0m         [0;32mfor[0m [0mhook[0m [0;32min[0m [0mself[0m[0;34m.[0m[0m_forward_hooks[0m[0;34m.[0m[0mvalues[0m[0;34m([0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    491[0m             [0mhook_result[0m [0;34m=[0m [0mhook[0m[0;34m([0m[0mself[0m[0;34m,[0m [0minput[0m[0;34m,[0m [0mresult[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/torch/nn/modules/linear.py[0m in [0;36mforward[0;34m(self, input)[0m
+[1;32m     65[0m     [0;34m@[0m[0mweak_script_method[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     66[0m     [0;32mdef[0m [0mforward[0m[0;34m([0m[0mself[0m[0;34m,[0m [0minput[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m---> 67[0;31m         [0;32mreturn[0m [0mF[0m[0;34m.[0m[0mlinear[0m[0;34m([0m[0minput[0m[0;34m,[0m [0mself[0m[0;34m.[0m[0mweight[0m[0;34m,[0m [0mself[0m[0;34m.[0m[0mbias[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     68[0m [0;34m[0m[0m
+[1;32m     69[0m     [0;32mdef[0m [0mextra_repr[0m[0;34m([0m[0mself[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/miniconda/envs/cs236605-hw/lib/python3.7/site-packages/torch/nn/functional.py[0m in [0;36mlinear[0;34m(input, weight, bias)[0m
+[1;32m   1350[0m     [0;32mif[0m [0minput[0m[0;34m.[0m[0mdim[0m[0;34m([0m[0;34m)[0m [0;34m==[0m [0;36m2[0m [0;32mand[0m [0mbias[0m [0;32mis[0m [0;32mnot[0m [0;32mNone[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1351[0m         [0;31m# fused op is marginally faster[0m[0;34m[0m[0;34m[0m[0;34m[0m[0m
+[0;32m-> 1352[0;31m         [0mret[0m [0;34m=[0m [0mtorch[0m[0;34m.[0m[0maddmm[0m[0;34m([0m[0mtorch[0m[0;34m.[0m[0mjit[0m[0;34m.[0m[0m_unwrap_optional[0m[0;34m([0m[0mbias[0m[0;34m)[0m[0;34m,[0m [0minput[0m[0;34m,[0m [0mweight[0m[0;34m.[0m[0mt[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m   1353[0m     [0;32melse[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[1;32m   1354[0m         [0moutput[0m [0;34m=[0m [0minput[0m[0;34m.[0m[0mmatmul[0m[0;34m([0m[0mweight[0m[0;34m.[0m[0mt[0m[0;34m([0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+
+[0;31mRuntimeError[0m: Expected object of backend CUDA but got backend CPU for argument #4 'mat1'
+RuntimeError: Expected object of backend CUDA but got backend CPU for argument #4 'mat1'
+
+Got errors while executing notebook Part1_Sequence.ipynb. Make sure you've implemented everything and that all tests pass.
+>> Running 1 notebooks...
+>> Running nbconvert on notebook Part1_Sequence.ipynb [execute|inplace]
+*** SLURM BATCH JOB 'test_job' DONE ***
