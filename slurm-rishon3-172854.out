@@ -1,0 +1,31 @@
+cpu-bind=MASK - rishon3, task  0  0 [16229]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [16229]: mask 0x100000001 set
+*** SLURM BATCH JOB 'test_job' STARTING ***
+*** Activating environment cs236605-hw ***
+/var/spool/slurmd.rishon3/job172854/slurm_script: line 6: /home/shaigue/miniconda3/etc/profile.d/conda.sh: No such file or directory
+
+CommandNotFoundError: Your shell has not been properly configured to use 'conda activate'.
+To initialize your shell, run
+
+    $ conda init <SHELL_NAME>
+
+Currently supported shells are:
+  - bash
+  - fish
+  - tcsh
+  - xonsh
+  - zsh
+  - powershell
+
+See 'conda init --help' for more information and options.
+
+IMPORTANT: You may need to close and restart your shell after running 'conda init'.
+
+
+Traceback (most recent call last):
+  File "main.py", line 10, in <module>
+    import cs236605.answers as answers
+  File "/home/shaigue/cs236605-hw3/cs236605/answers.py", line 2, in <module>
+    from IPython.display import display, Markdown
+ModuleNotFoundError: No module named 'IPython'
+*** SLURM BATCH JOB 'test_job' DONE ***
