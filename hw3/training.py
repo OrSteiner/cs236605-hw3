@@ -111,7 +111,7 @@ class Trainer(abc.ABC):
 
             if checkpoints:
                 if epoch < 1 or test_acc[-1] > test_acc[-2]:
-                    torch.save(self.model, "model_save")
+                    torch.save(self.model, checkpoint_filename)
             # ========================
 
             # Save model checkpoint if requested
