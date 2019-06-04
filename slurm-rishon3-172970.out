@@ -1,0 +1,11 @@
+cpu-bind=MASK - rishon3, task  0  0 [35967]: mask 0x200000002 set
+cpu-bind=MASK - rishon3, task  0  0 [35967]: mask 0x200000002 set
+*** SLURM BATCH JOB 'RNN_exp' STARTING ***
+[NbConvertApp] Converting notebook Part1_Sequence.ipynb to notebook
+[NbConvertApp] Executing notebook with kernel: python3
+[NbConvertApp] WARNING | Timeout waiting for IOPub output
+[NbConvertApp] Writing 177499 bytes to Part1_Sequence.ipynb
+>> Running 1 notebooks...
+>> Running nbconvert on notebook Part1_Sequence.ipynb [execute|inplace|allow_errors]
+>> Finished nbconvert on notebook Part1_Sequence.ipynb, elapsed=1664.402s
+*** SLURM BATCH JOB 'RNN_exp' DONE ***
