@@ -1,6 +1,0 @@
-cpu-bind=MASK - rishon3, task  0  0 [35942]: mask 0x100000001 set
-cpu-bind=MASK - rishon3, task  0  0 [35942]: mask 0x100000001 set
-*** SLURM BATCH JOB 'RNN_exp' STARTING ***
-[NbConvertApp] Converting notebook Part1_Sequence.ipynb to notebook
-[NbConvertApp] Executing notebook with kernel: python3
-slurmstepd-rishon3: error: *** JOB 172969 ON rishon3 CANCELLED AT 2019-06-04T08:29:53 ***
