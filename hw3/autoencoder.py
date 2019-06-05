@@ -148,7 +148,7 @@ class VAE(nn.Module):
             # Generate n latent space samples and return their reconstructions.
             # Remember that for the model, this is like inference.
             # ====== YOUR CODE: ======
-            z = torch.randn((n, self.z_dim))
+            z = torch.randn((n, self.z_dim), device=device)
             x = self.decode(z)
             print(x.size())
             samples = x
