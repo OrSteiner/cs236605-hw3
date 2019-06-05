@@ -152,6 +152,7 @@ class VAE(nn.Module):
             x = self.decode(z)
             print(x.size())
             samples = x
+            samples.cpu()
             # ========================
         return samples
 
