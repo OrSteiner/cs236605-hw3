@@ -105,7 +105,7 @@ class Generator(nn.Module):
         # Don't use a loop.
         # ====== YOUR CODE: ======
         if not with_grad:
-            with torch.no_grad:
+            with torch.no_grad():
                 z = torch.randn((n, self.z_dim), device=device)
                 samples = self(z)
         else:
