@@ -150,9 +150,8 @@ class VAE(nn.Module):
             # ====== YOUR CODE: ======
             z = torch.randn((n, self.z_dim), device=device)
             x = self.decode(z)
-            print(x.size())
             samples = x
-            samples.cpu()
+            samples.detach().cpu()
             # ========================
         return samples
 
