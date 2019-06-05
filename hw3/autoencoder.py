@@ -116,8 +116,7 @@ class VAE(nn.Module):
         # 2. Apply the reparametrization trick.
         # ====== YOUR CODE: ======
         h = self.features_encoder(x)
-        h = h.flatten()
-        h = h.unsqueeze(dim=0)
+        h = h.view(h.size(0), -1)
         mu = self.Linear_mu(h)
         log_sigma2 = self.Linear_log_sigma2(h)
 
@@ -187,15 +186,9 @@ def vae_loss(x, xr, z_mu, z_log_sigma2, x_sigma2):
     x_diff = ((x - xr)**2).mean()
     x_diff = ((x - xr).norm())**2 / (N*C*H*W)
 
-    #x = x.mean(dim=0)
-    #xr = xr.mean(dim=0)
-    #z_mu = z_mu.mean(dim=0)
-    #z_log_sigma2 = z_log_sigma2.mean(dim=0)
     data_loss = ((1/x_sigma2) * x_diff)
     kldiv_loss = ((torch.exp(z_log_sigma2)).sum() + (z_mu.norm())**2 - (z_log_sigma2.sum())) / N - dz
 
-    print(data_loss)
-    print(kldiv_loss)
     loss = data_loss + kldiv_loss
     # ========================
 
