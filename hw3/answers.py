@@ -11,10 +11,10 @@ math (delimited with $$).
 
 def part1_generation_params():
     start_seq = ""
-    temperature = .0001
+    temperature = 1
     # TODO: Tweak the parameters to generate a literary masterpiece.
     # ====== YOUR CODE: ======
-
+    start_seq = "My Lord!\n No one can undo your greatness!, This is Trivial.\n"
     # ========================
     return start_seq, temperature
 
