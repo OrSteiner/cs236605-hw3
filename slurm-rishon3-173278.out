@@ -1,0 +1,6 @@
+cpu-bind=MASK - rishon3, task  0  0 [13334]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [13334]: mask 0x100000001 set
+*** SLURM BATCH JOB 'RNN_exp' STARTING ***
+usage: main.py run-nb [-h] [--allow-errors] NB_PATH [NB_PATH ...]
+main.py run-nb: error: argument NB_PATH: Part2_VAE.ipynb is not a file
+*** SLURM BATCH JOB 'RNN_exp' DONE ***
