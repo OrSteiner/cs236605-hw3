@@ -1,0 +1,10 @@
+cpu-bind=MASK - rishon3, task  0  0 [4152]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [4152]: mask 0x100000001 set
+*** SLURM BATCH JOB 'RNN_exp' STARTING ***
+[NbConvertApp] Converting notebook Part2_VAE.ipynb to notebook
+[NbConvertApp] Executing notebook with kernel: python3
+[NbConvertApp] Writing 436491 bytes to Part2_VAE.ipynb
+>> Running 1 notebooks...
+>> Running nbconvert on notebook Part2_VAE.ipynb [execute|inplace|allow_errors]
+>> Finished nbconvert on notebook Part2_VAE.ipynb, elapsed=41.339s
+*** SLURM BATCH JOB 'RNN_exp' DONE ***

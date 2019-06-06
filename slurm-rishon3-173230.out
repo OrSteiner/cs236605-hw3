@@ -1,0 +1,5 @@
+cpu-bind=MASK - rishon3, task  0  0 [3862]: mask 0x100000001 set
+cpu-bind=MASK - rishon3, task  0  0 [3862]: mask 0x100000001 set
+*** SLURM BATCH JOB 'RNN_exp' STARTING ***
+python: can't open file 'runipy': [Errno 2] No such file or directory
+*** SLURM BATCH JOB 'RNN_exp' DONE ***
