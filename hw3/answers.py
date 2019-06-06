@@ -131,7 +131,7 @@ def part3_gan_hyperparams():
         data_label=1, label_noise=0.25,
         discriminator_optimizer=dict(
             type='SGD',  # Any name in nn.optim like SGD, Adam
-            lr=1e-4,
+            lr=0.003,
             # weight_decay=0.1
         ),
         generator_optimizer=dict(

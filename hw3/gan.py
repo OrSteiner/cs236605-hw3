@@ -80,7 +80,7 @@ class Generator(nn.Module):
             layers_params.append(nn.ConvTranspose2d(in_channels, filters, stride=2, kernel_size=5, padding=2,
                                                     output_padding=1))
             layers_params.append(nn.BatchNorm2d(filters))
-            layers_params.append(nn.ReLU())
+            layers_params.append(nn.LeakyReLU())
             in_channels = filters
 
         layers_params.append(nn.ConvTranspose2d(in_channels, out_channels, stride=2, kernel_size=5, padding=2,
