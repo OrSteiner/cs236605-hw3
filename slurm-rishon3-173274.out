@@ -3,3 +3,8 @@ cpu-bind=MASK - rishon3, task  0  0 [13129]: mask 0x100000001 set
 *** SLURM BATCH JOB 'RNN_exp' STARTING ***
 [NbConvertApp] Converting notebook Part3_GAN.ipynb to notebook
 [NbConvertApp] Executing notebook with kernel: python3
+[NbConvertApp] Writing 8814504 bytes to Part3_GAN.ipynb
+>> Running 1 notebooks...
+>> Running nbconvert on notebook Part3_GAN.ipynb [execute|inplace|allow_errors]
+>> Finished nbconvert on notebook Part3_GAN.ipynb, elapsed=544.763s
+*** SLURM BATCH JOB 'RNN_exp' DONE ***
