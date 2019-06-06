@@ -82,8 +82,8 @@ PART2_CUSTOM_DATA_URL = None
 def part2_vae_hyperparams():
     hypers = dict(
         batch_size=32,
-        h_dim=1024, z_dim=8, x_sigma2=5,
-        learn_rate=5e-4, betas=(0.9, 0.999),
+        h_dim=1024, z_dim=2, x_sigma2=5,
+        learn_rate=1e-3, betas=(0.9, 0.999),
     )
     # TODO: Tweak the hyperparameters to generate a former president.
     # ====== YOUR CODE: ======
@@ -127,15 +127,15 @@ PART3_CUSTOM_DATA_URL = None
 
 def part3_gan_hyperparams():
     hypers = dict(
-        batch_size=0, z_dim=0,
-        data_label=0, label_noise=0.0,
+        batch_size=32, z_dim=8,
+        data_label=1, label_noise=0.25,
         discriminator_optimizer=dict(
-            type='',  # Any name in nn.optim like SGD, Adam
-            lr=0.0,
+            type='SGD',  # Any name in nn.optim like SGD, Adam
+            lr=0.00025,
         ),
         generator_optimizer=dict(
-            type='',  # Any name in nn.optim like SGD, Adam
-            lr=0.0,
+            type='Adam',  # Any name in nn.optim like SGD, Adam
+            lr=0.003,
         ),
     )
     # TODO: Tweak the hyperparameters to train your GAN.
