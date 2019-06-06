@@ -1,6 +1,6 @@
 #!/bin/bash
 # a script for doing the RNN job
-
+rm checkpoints/vae.pt
 # ./py-sbatch.sh main.py run-nb --allow-errors Part1_Sequence.ipynb
 ./py-sbatch.sh main.py run-nb --allow-errors Part2_VAE.ipynb
 # command:
