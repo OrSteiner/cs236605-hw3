@@ -130,12 +130,13 @@ def part3_gan_hyperparams():
         batch_size=32, z_dim=8,
         data_label=1, label_noise=0.25,
         discriminator_optimizer=dict(
-            type='SGD',  # Any name in nn.optim like SGD, Adam
-            lr=1e-4,
+            type='Adam',  # Any name in nn.optim like SGD, Adam
+            lr=0.00025,
+            weight_decay=0.1
         ),
         generator_optimizer=dict(
             type='Adam',  # Any name in nn.optim like SGD, Adam
-            lr=5e-4,
+            lr=0.003,
         ),
     )
     # TODO: Tweak the hyperparameters to train your GAN.
