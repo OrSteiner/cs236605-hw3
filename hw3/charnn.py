@@ -87,7 +87,6 @@ def onehot_to_chars(embedded_text: Tensor, idx_to_char: dict) -> str:
     # TODO: Implement the reverse-embedding.
     # ====== YOUR CODE: ======
     char_indexes = torch.argmax(embedded_text, dim=1)
-    # print(char_indexes)
     result = ''.join(idx_to_char[int(i)] for i in char_indexes)
     # ========================
     return result
@@ -213,27 +212,19 @@ def generate_from_model(model, start_sequence, n_chars, char_maps, T):
 '''
         seq_len = len(out_text)
         # add an extra char so it will not drop the last char
-        # chars_to_onehot()
         x = chars_to_onehot(start_sequence, char_to_idx)
         x = x.unsqueeze(0)
-        # x, _ = chars_to_labelled_samples(out_text + " ", char_to_idx, seq_len, device)
-        # print("out_text: ", out_text, "x: ", x.argmax())
 
         n_generate = n_chars - len(start_sequence)
         h = None
-        # glob_k = 0
         for i in range(n_generate):
             y_pred, h = model(x.float(), h)
 
-            # y_max = y_pred.argmax(dim=2)
-            # print(y_max)
             y_pred = hot_softmax((y_pred[:, -1, :]).flatten(), temperature=T)
 
             char_idx = y_pred.multinomial(num_samples=1)
 
             char = idx_to_char[int(char_idx)]
-            # glob_k += 1
-            # print("char added: ", glob_k, " is: ", char)
             out_text += char
 
             x = chars_to_onehot(char, char_to_idx)
@@ -327,7 +318,6 @@ class MultilayerGRU(nn.Module):
         (B, L, H) as above.
         """
         batch_size, seq_len, _ = input.shape
-        # print("input size: ", input.size())
 
         layer_states = []
         for i in range(self.n_layers):
@@ -335,7 +325,6 @@ class MultilayerGRU(nn.Module):
                 layer_states.append(torch.zeros(batch_size, self.h_dim, device=input.device))
             else:
                 layer_states.append(hidden_state[:, i, :])
-        # print("shape h in ", layer_states[0].size())
 
         layer_input = input
         layer_output = None
@@ -350,7 +339,6 @@ class MultilayerGRU(nn.Module):
         for t in range(seq_len):  # loop over the time
 
             X_t = input[:, t, :]
-            # print("shape X_t in ", X_t.size())
 
             for i in range(self.n_layers):
                 params = self.layer_params[i]

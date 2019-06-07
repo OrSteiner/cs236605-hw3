@@ -261,25 +261,17 @@ class RNNTrainer(Trainer):
         # - Calculate number of correct char predictions
         # ====== YOUR CODE: ======
 
-        # self.h = self.h.to(self.device)
-        # printing the x, and the labels to verify
-        # print(x.argmax(dim=2))
-        # print(y)
-        # print(self.h)
         self.h.detach_()
         self.optimizer.zero_grad()
 
         y_pred, temp_h = self.model(x, self.h)
         y_pred = y_pred.transpose(1, 2)
-        # print("y pred: ", y_pred)
         loss = self.loss_fn(y_pred, y)
         loss.backward()
         self.optimizer.step()
 
         # calculate
         y_max = y_pred.argmax(1)
-        # print("y_max: ", y_max)
-        # print("y: ", y)
         num_correct = torch.sum((y_max == y)).float()
 
         self.h = temp_h
