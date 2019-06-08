@@ -23,11 +23,11 @@ class EncoderCNN(nn.Module):
         # 2048 FC
 
         conv_layers = [out_channels//4, out_channels//2, out_channels]
-        kernel_size = 4
+        kernel_size = 5
         # conv layers
         for filters in conv_layers:
-            modules.append(nn.Conv2d(in_channels, filters, kernel_size, padding=1, stride=2))
-            # modules.append(nn.AvgPool2d(2))  # , # return_indices=True))
+            modules.append(nn.Conv2d(in_channels, filters, kernel_size, padding=2))
+            modules.append(nn.AvgPool2d(2))  # , # return_indices=True))
             modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
             in_channels = filters
@@ -56,11 +56,11 @@ class DecoderCNN(nn.Module):
         # inputs to the Encoder were.
         # ====== YOUR CODE: ======
         conv_layers = [out_channels*4, out_channels*2, out_channels]
-        kernel_size = 4
+        kernel_size = 5
         # conv layers
         for filters in conv_layers:
-            modules.append(nn.ConvTranspose2d(in_channels, filters, kernel_size, padding=1, stride=2))
-            # modules.append(nn.Upsample(scale_factor=(2, 2)))
+            modules.append(nn.ConvTranspose2d(in_channels, filters, kernel_size, padding=2))
+            modules.append(nn.Upsample(scale_factor=(2, 2)))
             modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
             in_channels = filters
