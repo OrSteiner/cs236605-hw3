@@ -92,7 +92,7 @@ class VAE(nn.Module):
         # ====== YOUR CODE: ======
         # taking the latent space produced from encoder to mu and log_sigma
         # adding sigmoid to normalize
-        
+
         self.Linear_mu = nn.Sequential(nn.Linear(n_features, z_dim), nn.Sigmoid())
         self.Linear_log_sigma2 = nn.Sequential(nn.Linear(n_features, z_dim), nn.Sigmoid())
         self.Linear_z_h = nn.Sequential(nn.Linear(z_dim, n_features), nn.Sigmoid())

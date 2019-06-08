@@ -183,15 +183,15 @@ here it might represent a poor discriminator
 """
 
 part3_q3 = r"""
-**Your answer:**
 
+**The differences between the VAE and GAN:**
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+The images produced by the VAE seems smoother then the images produced
+by the GAN.
+the GEN generated images seems to have regions with sharp edges, by that I
+mean that there is a lot of contrast in certain parts of the image.
+But with the VAE, all the transitions seems to be smooth and continiues 
+
 
 """
 
