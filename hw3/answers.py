@@ -1,3 +1,10 @@
+import random
+
+
+def bin_rand():
+    return random.randint(0, 1)
+
+
 r"""
 Use this module to write your answers to the questions in the notebook.
 
@@ -133,8 +140,8 @@ PART3_CUSTOM_DATA_URL = None
 
 def part3_gan_hyperparams():
     hypers = dict(
-        batch_size=32, z_dim=8,
-        data_label=1, label_noise=0.25,
+        batch_size=32, z_dim=16,
+        data_label=bin_rand, label_noise=0.25,
         discriminator_optimizer=dict(
             type='SGD',  # Any name in nn.optim like SGD, Adam
             lr=0.003,
