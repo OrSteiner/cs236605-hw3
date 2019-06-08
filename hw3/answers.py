@@ -174,7 +174,11 @@ No, as we see from our training, the low loss does not correlate with good image
 for the optimization algorithm to work well. In supervised learning, small loss meant that we learned well, 
 here it might represent a poor discriminator
 
-** 2 - What does it means that the discriminator loss remains constant and the  
+** 2 - What does it means that the discriminator loss remains constant and the generator loss decreases?**
+ 
+ If the generator loss decreases it means it is fooling the discriminator more. 
+ If simultaneously the loss of the discriminator remains constant it has to be that the discriminator
+ becomes better at identifying the true images at the same time as the generator becomes better at fooling it.
 
 """
 
