@@ -26,8 +26,8 @@ class EncoderCNN(nn.Module):
 
         for filters in conv_layers:
             modules.append(nn.Conv2d(in_channels, filters, kernel_size, stride=2, padding=2))
-            modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
+            modules.append(nn.BatchNorm2d(filters))
             in_channels = filters
 
         # ========================
@@ -56,8 +56,8 @@ class DecoderCNN(nn.Module):
         # conv layers
         for filters in conv_layers:
             modules.append(nn.ConvTranspose2d(in_channels, filters, kernel_size, stride=2, padding=2, output_padding=1))
-            modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
+            modules.append(nn.BatchNorm2d(filters))
             in_channels = filters
 
         # adding last layer to bring it back to the form of the original image
@@ -91,9 +91,9 @@ class VAE(nn.Module):
         # TODO: Add parameters needed for encode() and decode().
         # ====== YOUR CODE: ======
         # taking the latent space produced from encoder to mu and log_sigma
-        self.Linear_mu = nn.Linear(n_features, z_dim)
-        self.Linear_log_sigma2 = nn.Linear(n_features, z_dim)
-        self.Linear_z_h = nn.Linear(z_dim, n_features)
+        self.Linear_mu = nn.Sequential(nn.Linear(n_features, z_dim), nn.ReLU(), nn.BatchNorm2d())
+        self.Linear_log_sigma2 = nn.Sequential(nn.Linear(n_features, z_dim), nn.ReLU(), nn.BatchNorm2d())
+        self.Linear_z_h = nn.Sequential(nn.Linear(z_dim, n_features), nn.ReLU(), nn.BatchNorm2d())
         # self.add_params???
 
         # ========================
