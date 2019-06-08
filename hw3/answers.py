@@ -141,7 +141,7 @@ PART3_CUSTOM_DATA_URL = None
 def part3_gan_hyperparams():
     hypers = dict(
         batch_size=32, z_dim=16,
-        data_label=bin_rand, label_noise=0.25,
+        data_label=1, label_noise=0.2,
         discriminator_optimizer=dict(
             type='SGD',  # Any name in nn.optim like SGD, Adam
             lr=0.003,
@@ -169,6 +169,8 @@ We want the generator's gradients to be affected only by it's loss, and not the 
 """
 
 part3_q2 = r"""
+
+
 
 """
 
