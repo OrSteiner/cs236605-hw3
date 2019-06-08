@@ -17,23 +17,19 @@ class EncoderCNN(nn.Module):
         # You can use any Conv layer parameters, use pooling or only strides,
         # use any activation functions, use BN or Dropout, etc.
         # ====== YOUR CODE: ======
-        # 5*5 conv 64 + sam + BN + RELU
-        # 5*5 conv 128 + sam + BN + RELU
-        # 5*5 conv 256 + sam + BN + RELU
-        # 2048 FC
+        # BN, 5 X 5 conv  64 -> downsampling, BN, ReLu
+        # BN, 5 X 5 conv  128 -> downsampling, BN, ReLu
+        # BN, 5 X 5 conv  256 -> downsampling, BN, ReLu
 
         conv_layers = [out_channels//4, out_channels//2, out_channels]
         kernel_size = 5
-        # conv layers
+
         for filters in conv_layers:
-            modules.append(nn.Conv2d(in_channels, filters, kernel_size, padding=2))
-            modules.append(nn.AvgPool2d(2))  # , # return_indices=True))
+            modules.append(nn.Conv2d(in_channels, filters, kernel_size, stride=2, padding=2))
             modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
             in_channels = filters
 
-        # No Linear Now
-        # nn.Linear()
         # ========================
         self.cnn = nn.Sequential(*modules)
 
@@ -55,15 +51,18 @@ class DecoderCNN(nn.Module):
         # Output should be a batch of images, with same dimensions as the
         # inputs to the Encoder were.
         # ====== YOUR CODE: ======
-        conv_layers = [out_channels*4, out_channels*2, out_channels]
+        conv_layers = [in_channels, in_channels//2, in_channels//4]
         kernel_size = 5
         # conv layers
         for filters in conv_layers:
-            modules.append(nn.ConvTranspose2d(in_channels, filters, kernel_size, padding=2))
-            modules.append(nn.Upsample(scale_factor=(2, 2)))
+            modules.append(nn.ConvTranspose2d(in_channels, filters, kernel_size, stride=2, padding=2, output_padding=1))
             modules.append(nn.BatchNorm2d(filters))
             modules.append(nn.ReLU())
             in_channels = filters
+
+        # adding last layer to bring it back to the form of the original image
+        modules.append(nn.Conv2d(in_channels, out_channels, kernel_size, padding=2))
+
         # ========================
         self.cnn = nn.Sequential(*modules)
 
@@ -91,6 +90,7 @@ class VAE(nn.Module):
 
         # TODO: Add parameters needed for encode() and decode().
         # ====== YOUR CODE: ======
+        # taking the latent space produced from encoder to mu and log_sigma
         self.Linear_mu = nn.Linear(n_features, z_dim)
         self.Linear_log_sigma2 = nn.Linear(n_features, z_dim)
         self.Linear_z_h = nn.Linear(z_dim, n_features)
