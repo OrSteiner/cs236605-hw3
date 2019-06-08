@@ -159,28 +159,16 @@ def part3_gan_hyperparams():
 
 
 part3_q1 = r"""
-**Your answer:**
+**We will sometimes discard the gradients for the sampling** 
 
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
+When we want to train the discriminator, and not the generator.
+If we do not Do it so, we wil not discard the gradients after the backprop was preformed on
+the loss of the discriminator, they will impact the training of the generator, and we don't want that.
+We want the generator's gradients to be affected only by it's loss, and not the discriminator's.
 
 """
 
 part3_q2 = r"""
-**Your answer:**
-
-
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
 
 """
 
