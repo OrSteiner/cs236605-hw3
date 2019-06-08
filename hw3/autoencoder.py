@@ -91,9 +91,11 @@ class VAE(nn.Module):
         # TODO: Add parameters needed for encode() and decode().
         # ====== YOUR CODE: ======
         # taking the latent space produced from encoder to mu and log_sigma
-        self.Linear_mu = nn.Sequential(nn.Linear(n_features, z_dim), nn.ReLU(), nn.BatchNorm2d())
-        self.Linear_log_sigma2 = nn.Sequential(nn.Linear(n_features, z_dim), nn.ReLU(), nn.BatchNorm2d())
-        self.Linear_z_h = nn.Sequential(nn.Linear(z_dim, n_features), nn.ReLU(), nn.BatchNorm2d())
+        # adding sigmoid to normalize
+        
+        self.Linear_mu = nn.Sequential(nn.Linear(n_features, z_dim), nn.Sigmoid())
+        self.Linear_log_sigma2 = nn.Sequential(nn.Linear(n_features, z_dim), nn.Sigmoid())
+        self.Linear_z_h = nn.Sequential(nn.Linear(z_dim, n_features), nn.Sigmoid())
         # self.add_params???
 
         # ========================
