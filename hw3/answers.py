@@ -169,8 +169,12 @@ We want the generator's gradients to be affected only by it's loss, and not the 
 """
 
 part3_q2 = r"""
+** 1 - Should we stop when the generator loss becomes very low?**
+No, as we see from our training, the low loss does not correlate with good image generated, if is only 
+for the optimization algorithm to work well. In supervised learning, small loss meant that we learned well, 
+here it might represent a poor discriminator
 
-
+** 2 - What does it means that the discriminator loss remains constant and the  
 
 """
 
