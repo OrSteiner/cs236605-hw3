@@ -190,7 +190,18 @@ The images produced by the VAE seems smoother then the images produced
 by the GAN.
 the GEN generated images seems to have regions with sharp edges, by that I
 mean that there is a lot of contrast in certain parts of the image.
-But with the VAE, all the transitions seems to be smooth and continiues 
+But with the VAE, all the transitions seems to be smooth and continues.
+
+This is due to the nature of the loss function.
+The loss function on the VAE is the data loss + KL loss, and because that the original picture is smooth, so the loss
+that is a smoother function then the loss in the GAN, produces a more consistent gradients, and the resulting model 
+produces a smoother image.
+
+ON the other hand, the loss in the GAN is based on the discriminator, that could be a very complex function
+(and changes over time), and the gradients could be less consistent like in the VAE loss. 
+also because that the discriminator is a convolution decoder, it might focuse on certain features in the feature map
+of the image, and that can cause the different "regions" in the image to be generated according to what the 
+discriminator focuses on.
 
 
 """
