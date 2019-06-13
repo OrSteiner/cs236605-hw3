@@ -139,7 +139,7 @@ not be normally distributed, and therefor we will have high KL divergence value.
 features vector and returns one of the images in the dataset. In fact, the benefit of using the KL divergence term is to
 prevent dataset over-fitting.
 
-An equation: $e^{i\pi} -1 = 0$
+
 
 """
 
