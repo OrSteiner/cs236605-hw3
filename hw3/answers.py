@@ -105,27 +105,40 @@ def part2_vae_hyperparams():
 
 
 part2_q1 = r"""
-**Your answer:**
+**What does the $\sigma^2$ hyperparameter do?**
 
+The $\sigma^2$ hyperparameter allows us to control the relative influence of the data-loss.
+In fact, if we will use a small $sigma^2$ the data-loss effect on the loss value will be higher, and vice-versa.
+The more effect the data-loss has on the loss value we allow less randomness to our generator and expect results
+that resemble the dataset we have.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
-An equation: $e^{i\pi} -1 = 0$
 
 """
 
 part2_q2 = r"""
-**Your answer:**
+**Loss term and KL divergence:**
 
+1. The purpose of the reconstruction loss is to increase the probability that the model will reconstruct an image
+that resembles the imaged used in the feature extruction (encoding) phase. What we try to achieve is to increase
+the model's ability to create the kinds of images that exist in the image dataset.
+The purpose of the KL divergence is to measure the distance between the posterior and the prior distributions.
+We want to make sure that our encoder's outputs are distributed in a similar way to the prior distribution,
+which means the distribution of feature vectors in the latent space.
 
-Write your answer using **markdown** and $\LaTeX$:
-```python
-# A code block
-a = 2
-```
+2. We assume the latent space's distribution is Normal with mean=0 and var=1. By minimizing the KL divergence term we
+try to make the posterior distribution as close as possible to the prior. if we will not try to normalize the decoder's
+values we will end up at the end of training with informed vectors, that each one represents an image from the dataset.
+In fact we try to use normally distributed input vectors to our decoder, which means that we try to use normally
+distributed vectors for the training latent space of our model.
+By constantly comparing the posterior distribution (the encoder's output) to the normal distribution we make sure
+that the features created by the encoder in the features vectors are the one's necessary to create an image that belongs
+to our instance space. If our encoder will create too many features, the vectors encoded from the instance space will
+not be normally distributed, and therefor we will have high KL divergence value.
+
+3. If we wouldn't use the KL divergence term at all, at the end of the training we will have a decoder that gets a
+features vector and returns one of the images in the dataset. In fact, the benefit of using the KL divergence term is to
+prevent dataset over-fitting.
+
 An equation: $e^{i\pi} -1 = 0$
 
 """
